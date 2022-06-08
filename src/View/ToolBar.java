@@ -3,8 +3,6 @@ package View;
 import Mode.*;
 
 import javax.swing.*;
-import javax.swing.border.Border;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -73,8 +71,8 @@ public class ToolBar extends JPanel{
             isPressed = false;
             this.ButtonMode = mode;
         }
-        private void setPressedColor(Color backgroud,Color foreground) {
-            this.setBackground(backgroud);
+        private void setPressedColor(Color background,Color foreground) {
+            this.setBackground(background);
             this.setForeground(foreground);
         }
         private Mode getButtonMode()

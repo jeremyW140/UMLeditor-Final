@@ -46,17 +46,22 @@ public class SelectMode extends Mode {
         int move_y = e.getY() - Start_Y;
         if ( selected != null )
         {
-
             selected.ResetLocation(move_x,move_y);
-            for ( int i = 0 ; i <selectedStartLine.size() ; i++ )
+            List<Object> gList = selected.GetObjectList();
+            for ( int index = 0 ; index < gList.size() ; index++ )
             {
-                selectedStartLine.get(i).resetStart(move_x,move_y);
-            }
-            for ( int i = 0 ; i <selectedEndLine.size() ; i++ )
-            {
-                selectedEndLine.get(i).resetEnd(move_x,move_y);
-            }
-            canvas.repaint();
+                Object obj = gList.get(index);
+                selectedStartLine = obj.LineStart;
+                selectedEndLine = obj.LineEnd;
+                for ( int i = 0 ; i <selectedStartLine.size() ; i++ )
+                {
+                    selectedStartLine.get(i).resetStart(move_x,move_y);
+                }
+                for ( int i = 0 ; i <selectedEndLine.size() ; i++ )
+                {
+                    selectedEndLine.get(i).resetEnd(move_x,move_y);
+                }
+            }canvas.repaint();
             Start_X = e.getX();
             Start_Y = e.getY();
         }

@@ -37,26 +37,44 @@ public class Group extends Object {
         return this.ObjList;
     }
     public void ResetLocation(int move_X, int move_Y){
-        for(int i = 0; i < ObjList.size(); i++){
-            Object obj = ObjList.get(i);
+        for (Object obj : ObjList) {
             obj.x1 += move_X;
             obj.y1 += move_Y;
-            obj.x2 = obj.x1 + width;
-            obj.y2 = obj.y1 + height;
-            for ( int j = 0 ; j < obj.LineStart.size() ; j++ ){
-                obj.LineStart.get(j).resetStart(move_X,move_Y);
-                obj.LineStart.get(j).resetEnd(move_X,move_Y);
-
+            obj.x2 = obj.x1 + obj.width;
+            obj.y2 = obj.y1 + obj.height;
+            for (Line line : obj.LineStart) {
+                line.resetStart(move_X, move_Y);
+            }
+            for (Line line : obj.LineEnd) {
+                line.resetEnd(move_X, move_Y);
             }
         }
-        ResetArea(move_X,move_Y);
+        ResetArea(move_X, move_Y);
     }
     public void ResetArea(int move_X, int move_Y){
+        bounds.setLocation(bounds.x + move_X, bounds.y + move_Y);
+        for (Object obj : ObjList) {
+            obj.x1 += move_X;
+            obj.y1 += move_Y;
+            obj.x2 = obj.x1 + obj.width;
+            obj.y2 = obj.y1 + obj.height;
+        }
         bounds.setLocation(bounds.x + move_X, bounds.y + move_Y);
         x1 = bounds.x;
         y1 = bounds.y;
         x2 = bounds.x + bounds.width;
         y2 = bounds.y + bounds.height;
+
+        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
+
+        for (Object obj : ObjList) {
+            minX = Math.min(minX, obj.getX1());
+            minY = Math.min(minY, obj.getY1());
+            maxX = Math.max(maxX, obj.getX2());
+            maxY = Math.max(maxY, obj.getY2());
+        }
+        bounds.setBounds(minX, minY, maxX - minX, maxY - minY);
     }
     public void SetPoint()
     {
@@ -66,7 +84,7 @@ public class Group extends Object {
         }
     }
     public void show(Graphics g){
-        int offset = 10;
+        int offset = 10; // 突出的邊界大小
         g.setColor(selectedColor);
         g.fillRect(bounds.x - offset, bounds.y - offset, bounds.width + offset * 2, bounds.height + offset * 2);
     }
